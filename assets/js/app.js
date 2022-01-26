@@ -25,7 +25,7 @@ const mario = document.getElementById("avatar");
 const coin = document.getElementById("coin");
 
 //create audio effect
-const music = new Audio("../audio/smw_coin.wav");
+const music = new Audio("/smw_coin.wav");
 
 //score count
 const scoreTitle = document.getElementById("score");
@@ -49,31 +49,37 @@ function keydown(event) {
   let diff = 30;
 
   //left
-  if (key_code === 37) x -= diff;
+  if (key_code === 37) {
+    if (x > 0) {
+      x -= diff;
+      mario.style.left = x + "px";
+      mario.style.transform = "scaleX(-1)";
+    }
+  }
 
   //top
-  if (key_code === 38) y -= diff;
+  if (key_code === 38) {
+    if (y > 0) {
+      y -= diff;
+      mario.style.top = y + "px";
+    }
+  }
 
   //right
-  if (key_code === 39) x += diff;
+  if (key_code === 39) {
+    if (x < window.innerWidth - imgW) {
+      x += diff;
+      mario.style.left = x + "px";
+      mario.style.transform = "scaleX(1)";
+    }
+  }
 
   //down
-  if (key_code === 40) y += diff;
-
-  // console.log(mario.getBoundingClientRect().bottom < window.innerHeight - imgH);
-
-  //move mario
-  if (
-    mario.getBoundingClientRect().top > 0 &&
-    mario.getBoundingClientRect().bottom < window.innerHeight
-  ) {
-    mario.style.top = y + "px";
-  }
-  if (
-    mario.getBoundingClientRect().left > 0 &&
-    mario.getBoundingClientRect().right < window.innerWidth
-  ) {
-    mario.style.left = x + "px";
+  if (key_code === 40) {
+    if (y < window.innerHeight - imgH) {
+      y += diff;
+      mario.style.top = y + "px";
+    }
   }
 
   if (isTouching(mario, coin)) {
@@ -82,8 +88,4 @@ function keydown(event) {
     coinMoving();
     music.play();
   }
-  music.pause();
-
-  console.log(mario.offsetTop > 0);
-  console.log(mario.getBoundingClientRect().top > 0);
 }
